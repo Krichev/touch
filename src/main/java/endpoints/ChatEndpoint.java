@@ -22,6 +22,7 @@ public class ChatEndpoint {
     static Map<Session, List<Message>> mapOfMsg = new ConcurrentHashMap<>();
     static Map<Session, Session> agentClient = new ConcurrentHashMap<>();
 
+    //make field leave private
     Boolean leave = false;
     String usern = "anonymous";
     Session session = null;
@@ -45,6 +46,8 @@ public class ChatEndpoint {
     private void clientProcess(Session session) {
         sessionListCl.add(session);
         if (sessionListAg.size() > 0) {
+            //you can shuffle the list of agents for a chance to connect to the same agent or to another after /leave
+            //poll() takes always the last agent
             agentClient.put(sessionListAg.poll(), session);
             sessionListCl.remove(session);
         }
@@ -64,6 +67,7 @@ public class ChatEndpoint {
 
                     }
                 }
+                //after sending client message history use mapOFMsg.remove for sessionClient to not stored old messages
             } catch (IOException | EncodeException e) {
                 log.error(e + " while resolving agent`s session and sending messages to this session");
             }
@@ -117,6 +121,8 @@ public class ChatEndpoint {
         log.info(msg + " from " + usern);
         try {
             if (leave) {
+                //after /leave if client sends messages he connects to all free agents because field leave always true
+                //other clients cannot connect to these agents
                 if (role.equals("agent")) {
                     agentProcess(session);
                 } else if (role.equals("client")) {

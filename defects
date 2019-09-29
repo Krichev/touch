@@ -1,0 +1,6 @@
+add .gitignore file
+.idea ,
+*.iml,
+*.iws,
+ target/
+ should be ignored
