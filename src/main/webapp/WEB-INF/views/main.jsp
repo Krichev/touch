@@ -4,6 +4,7 @@
 <head>
     <title>Title</title>
     <style>
+        /*Move css to separate file*/
         .chatbox {
             display: none;
         }
@@ -66,6 +67,7 @@
         }
     </style>
     <script>
+        /*Move script to separate file*/
         let ChatUnit = {
             init() {
                 this.startbox = document.querySelector(".start");
