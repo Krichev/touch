@@ -95,11 +95,23 @@
 
                 })
             },
+            closeUI: function () {
+                this.allScreen = document.getElementById("allIn");
+                this.allScreen.innerText = "you have closed the chat, to restart conversation, please update the page"
+            },
             send() {
-                this.sendMessage({
-                    name: this.namein + " " + this.roleUser,
-                    text: this.msgTextArea.value
-                });
+                this.tx = this.msgTextArea.value;
+
+                if (this.tx !== "") {
+                    this.sendMessage({
+                        name: this.namein + " " + this.roleUser,
+                        text: this.msgTextArea.value
+                    });
+                }
+
+                if (this.tx === "/exit") {
+                    this.closeUI();
+                }
             },
             onOpenSock() {
 
@@ -126,6 +138,7 @@
                 this.onMessage({name: "I`m ", text: msg.text});
                 this.msgTextArea.value = "";
                 this.ws.send(JSON.stringify(msg));
+
             },
             openSocket() {
 
@@ -154,20 +167,20 @@
 </head>
 <body>
 <h1>Support</h1>
-
-<div class="start">
-    <input type="text" class="username" placeholder="to start enter such command [ /create (client or agent) name] "
-           required pattern="/create agent [a-z]+|/create client [a-z]+">
-    <button id="start">start</button>
-</div>
-<div class="chatbox">
-    <textarea class="msg">
+<div id="allIn">
+    <div class="start">
+        <input type="text" class="username" placeholder="to start enter such command [ /create (client or agent) name] "
+               required pattern="/create agent [a-z]+|/create client [a-z]+">
+        <button id="start">start</button>
+    </div>
+    <div class="chatbox">
+    <textarea class="msg" placeholder="enter something, empty messages prohibited">
 
         </textarea>
-    <div class="messages">
+        <div class="messages">
 
+        </div>
     </div>
-
 </div>
 </body>
 </html>
